@@ -127,14 +127,16 @@ class Home extends React.Component {
       axios.post("students.json", data_student).then((response) => {
         let id_new_student = response.data.name;
 
-        //chercher l'etudiant qui a l'Id==0
+        //chercher l'etudiant qui a l'Id==0 sur la liste
         let newListStudent = this.state.list_student_data;
         newListStudent.forEach((s) => {
           if (s.id == 0) {
             s.id = id_new_student;
           }
-          console.log(s);
+          //modifier la liste sur le state
+          
         });
+        this.setState({list_student_data:newListStudent})
         // const myNewStudent={
         //   nom:nStudent.nom,
         //   pren:nStudent.pren,
