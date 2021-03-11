@@ -19,7 +19,7 @@ export default function ListStudent(props) {
             //for (let i=0;i<props.dataList.length;i++){
               //<Student data={props.dataList[i]}/> 
             //}
-               props.dataList.map(s=><Student key={s.id} data={s}/>)
+               props.dataList.map((s,index) => <Student key={index} data={s}/>)
           }
         </div>
       </div>
