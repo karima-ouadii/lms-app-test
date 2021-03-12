@@ -37,11 +37,12 @@ class Home extends React.Component {
           <NewStudent
             handleSubmit={this.addStudent}
             changeInput={this.handleChange}
+            avatar={this.state.email}
           />
 
   <ListStudent 
            dataList={this.state.list_student_data} 
-           handleDeleteStudent={this.deleteStudent}/>
+           handleDeleteFromHome={this.deleteStudent}/>
         </div>
       </>
     );
@@ -185,15 +186,19 @@ class Home extends React.Component {
 
     //---HANDLE DELETE
     deleteStudent=(idStudent)=>{
+      let choice=window.confirm("Are you sure?");
 
-      //supprimer un etudiant depuis firebase
+      if (choice==true){
+        //supprimer un etudiant depuis firebase
       // alert(idStudent)
       // alert ("delete student")
       axios.delete("students/"+idStudent+".json").then(()=>{
         let newList=this.state.list_student_data;
-        newList=newList.filter(s=>s.id !== idStudent);
+        newList=newList.filter(
+        (s)=>s.id !== idStudent);
         this.setState({list_student_data:newList})
-      })
+      });
+      }
     
   }
 }
