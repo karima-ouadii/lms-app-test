@@ -14,14 +14,17 @@ class Home extends React.Component {
     this.state = {
       nom: "",
       pren: "",
-
+     avatar:"",
       email: "",
-
+      updatedStudent_id:-1,
       list_student_data: [
         // new StudentModel("nom1","pren1","nom1@gmail.com","https://i.imgur.com/1o1zEDM.png",true),
         // new StudentModel("nom2","pren2","nom2@gmail.com","https://i.imgur.com/1o1zEDM.png",false),
         // new StudentModel("nom3","pren3","nom3@gmail.com","https://i.imgur.com/1o1zEDM.png",true),
       ],
+      
+      textBtnState:"Add Student",
+      iconBtnState:"fas fa-plus-circle"
     };
     console.log(this.state);
   }
@@ -35,14 +38,21 @@ class Home extends React.Component {
           {/* <Form handleChange={this.handleChange}/> */}
           {/* new student components*/}
           <NewStudent
+          textBtn={this.state.textBtnState}
+          iconBtn={this.state.iconBtnState}
+          // hadleChange={this.handleChange}
             handleSubmit={this.addStudent}
             changeInput={this.handleChange}
-            avatar={this.state.email}
+            avatar={this.state.avatar}
+            nom={this.state.nom}
+            pren={this.state.pren}
+            email={this.state.email}
           />
 
   <ListStudent 
            dataList={this.state.list_student_data} 
-           handleDeleteFromHome={this.deleteStudent}/>
+           handleDeleteFromHome={this.deleteStudent}
+           handleEditFromHome={this.editStudent}/>
         </div>
       </>
     );
@@ -200,6 +210,28 @@ class Home extends React.Component {
       });
       }
     
+  }
+
+  //---editStudent
+
+  editStudent=(updatedStudent)=>{
+
+    //changer le text button newStudent
+    this.setState({textBtnState:"Edit Student"})
+
+    //changer l'icon du button newStudent
+    this.setState({iconBtnState:"fas fa-edit"})
+
+    //ajouter les informations au state
+    this.setState({
+      nom:updatedStudent.nom,
+      pren:updatedStudent.pren,
+      avatar:updatedStudent.avatar,
+      email:updatedStudent.email,
+      updatedStudent_id:updatedStudent.id
+    })
+
+    console.log(updatedStudent)
   }
 }
 

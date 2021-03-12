@@ -27,10 +27,15 @@ export default function Student(props) {
                   <button className="mz-1 btn btn-info m-1">
                     <i className="fas fa-eye" />
                   </button>
-                  <button className="mz-1 btn btn-warning m-1">
+                  {/* lors du click tu passe l'objet student vers la liste */}
+                  <button 
+                  onClick={()=>props.handleEditFromList(props.data)}
+                  className="mz-1 btn btn-warning m-1">
                     <i className="fas fa-edit" />
                   </button>
-                  <button onClick={()=>props.handleDeleteFromList(props.data.id)} className="mz-1 btn btn-danger m-1">
+                  <button 
+                  onClick={()=>props.handleDeleteFromList(props.data.id)} 
+                  className="mz-1 btn btn-danger m-1">
                     <i className="fas fa-trash" />
                   </button>
                 </div>
