@@ -13,7 +13,8 @@ export default function NewStudent(props) {
           }}
            />
           <form 
-          onSubmit={props.handleSubmit} autoComplete="off">
+          onSubmit={props.action=="ADD" ? props.handleAddSubmit: props.handleEditSubmit} 
+          autoComplete="off">
             <div className="mb-4 mt-4 w-70 mx-auto">
               <input onChange={props.changeInput}
               name="nom"

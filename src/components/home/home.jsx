@@ -1,8 +1,13 @@
 import "./home.css";
 import ListStudent from "../student/list-student";
-import NewStudent from "../student/new-student";
-import StudentModel from "./../../models/student-model";
+
+//---je peux avoir n'import quel nom de composant
+import FormStudent from "../student/new-student";
+
 import React from "react";
+
+import StudentModel from "./../../models/student-model";
+
 import Form from "./form";
 import axios from "../../utils/axios";
 
@@ -24,7 +29,8 @@ class Home extends React.Component {
       ],
       
       textBtnState:"Add Student",
-      iconBtnState:"fas fa-plus-circle"
+      iconBtnState:"fas fa-plus-circle",
+      action:"ADD"
     };
     console.log(this.state);
   }
@@ -37,16 +43,20 @@ class Home extends React.Component {
         <div className="container-fluid d-flex p-4 ">
           {/* <Form handleChange={this.handleChange}/> */}
           {/* new student components*/}
-          <NewStudent
+   <FormStudent
           textBtn={this.state.textBtnState}
           iconBtn={this.state.iconBtnState}
-          // hadleChange={this.handleChange}
-            handleSubmit={this.addStudent}
-            changeInput={this.handleChange}
+         
             avatar={this.state.avatar}
             nom={this.state.nom}
             pren={this.state.pren}
             email={this.state.email}
+            action={this.state.action}
+
+           //  handleChange={this.handleChange}
+           handleAddSubmit={this.addStudent}
+           changeInput={this.handleChange}
+           handleEditSubmit={this.submitEditStudent}
           />
 
   <ListStudent 
@@ -212,7 +222,7 @@ class Home extends React.Component {
     
   }
 
-  //---editStudent
+  //---editStudent l'orsqu'on click sur btn update icon (student)
 
   editStudent=(updatedStudent)=>{
 
@@ -230,8 +240,66 @@ class Home extends React.Component {
       email:updatedStudent.email,
       updatedStudent_id:updatedStudent.id
     })
+     
+    //changer l'action du state
+    this.setState({action:"EDIT"})
 
     console.log(updatedStudent)
+  }
+
+  //----submitEditStudent la fonction qui va changer l'etudiant depuis firebase
+  submitEditStudent=(event)=>{
+
+    // alert(1)
+
+    //ne pas acctualiser la page
+    event.preventDefault();
+
+    //partie data a envoyer a firebase
+    const student_data={
+      nom:this.state.nom,
+      pren:this.state.pren,
+      email:this.state.email,
+      avatar:this.state.avatar,
+
+    }
+
+    //appel a la fonction put de axios
+    axios
+    .put("students/"+this.state.updatedStudent_id+".json",student_data)
+    .then((response)=>{
+      
+      //changer l'etudiant dans la liste
+      let newList=this.state.list_student_data;
+      newList.forEach((s)=>{
+        if(s.id==this.state.updatedStudent_id){
+          s.nom=response.data.nom;
+          s.pren=response.data.pren;
+          s.email=response.data.email;
+          s.avatar=response.data.avatar;
+        }
+      });
+      //modifier la liste du state
+      this.setState({list_student_data:newList})
+
+      //vider le formulaire
+      event.target.reset();
+
+      //vider les variables state
+      this.setState({
+        nom:"",
+        pren:"",
+        email:"",
+        avatar:"",
+        updatedStudent_id:-1,
+        textBtnState:"Add Student",
+      iconBtnState:"fas fa-plus-circle",
+      action:"ADD",
+
+
+
+      })
+    });
   }
 }
 
